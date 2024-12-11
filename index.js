@@ -1,5 +1,7 @@
-const express = require('express');
-const mongoose = require('mongoose');
+import express from 'express';
+import  mongoose from 'mongoose';
+import user from './models/users.js';
+
 const app = express();
 const port = 3000;
 
@@ -25,6 +27,26 @@ mongoose
 
 app.get('/', (req, res) => {
     res.send('Hello, World!');
+});
+
+app.post('/users', async (req, res)=>{
+    try{
+        const { name, email, age, isActive } = req.body;
+        const newUser = new User({ name, email, age, isActive });
+        await newUser.save();
+        res.status(201).send(newUser);
+        } catch (error) {
+            res.status(400).send({ error: error.message });
+        }
+});
+
+app.get('/users', async (req, res)=>{
+    try{
+        const activeUsers = await User.find({ isActive: true });
+        res.status(200).send(activeUsers);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
 });
 
 app.listen(port, () => {

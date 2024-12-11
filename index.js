@@ -1,5 +1,6 @@
 import express from 'express';
 import  mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import user from './models/users.js';
 
 const app = express();
@@ -8,7 +9,7 @@ const port = 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-require('dotenv').config();
+dotenv.config();
 
 const mongoURL = process.env.MONGO_URL
 
